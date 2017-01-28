@@ -1,0 +1,1040 @@
+<!-- Copyright © 2016, Xerxes Langerudi. All rights reserved. -->
+
+<!doctype html>
+
+<html>
+<head>
+	<title>FlightTrainer</title>
+</head>
+
+<style>
+
+html, body
+{
+	text-align: right;
+	color: white;
+	height: 95%;
+}
+
+.canvas
+{
+	float: left;
+}
+
+#menu
+{
+	width: 276px;
+	height: 100%;
+	font: 16px Verdana;
+	float: right;
+	background-color: white;
+}
+
+.header
+{
+	width: 276px;
+	height: 50px;
+	font-size: 25px;
+	color: grey;
+}
+
+.itemDescription
+{
+	width: 276px;
+	float: right;
+	color: grey;
+}
+
+.itemHolder
+{
+	width: 276px;
+	float: right;
+}
+
+select
+{
+	width: 140px;
+	border: 2px solid turquoise;
+	color: grey;
+}
+
+</style>
+
+<body>
+
+<canvas width="970" height="650" class="canvas" id="canvas"></canvas>
+	<div id="menu">
+		<form>
+			<div class="header">
+				FlightTrainer
+			</div>
+
+			<div class="itemDescription" id="itemDescription1">
+				Color:
+			</div>
+			<div class="itemHolder" id="itemHolder1">
+				<select name="color" id="color">
+					<option value="Cool">Cool</option>
+					<option selected="" value="Cooler">Cooler</option>
+					<option value="Wet">Wet</option>
+					<option value="Wetter">Wetter</option>
+					<option value="Hot">Hot</option>
+					<option value="Hotter">Hotter</option>
+					<option value="Bright">Bright</option>
+					<option value="Dark">Dark</option>
+					<option value="Tasty">Tasty</option>
+					<option value="Gold">Gold</option>
+					<option value="Orange">Orange</option>
+					<option value="Liquid">Liquid</option>
+				</select>
+			</div>
+
+			<div class="itemDescription" id="itemDescription2">
+				Speed:
+			</div>
+			<div class="itemHolder" id="itemHolder2">
+				<select name="speed" id="speed">
+					<option value="5">5</option>
+					<option selected="" value="10">10</option>
+					<option value="15">15</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+					<option value="30">30</option>
+					<option value="35">35</option>
+				</select>
+			</div>
+		</form>
+	</div>
+
+<script type="text/javascript">
+
+var RELEASEMODE = true;
+
+// Helicopter
+var helicopterRotorColor;
+var helicopterRotorHolderColor;
+var helicopterBodyColor;
+var helicopterWindowColor;
+var helicopterBackRotorColor;
+var helicopterBackRotorHolderColor;
+var helicopterOrdnanceHolderColor;
+var helicopterOrdnanceColor;
+
+
+// Tank
+var tankFirearmsColor;
+var tankWeaponMounterColor;
+var tankBodyColor;
+var tankWheelColor;
+var tankChainColor;
+
+var canvas = document.querySelector("#canvas");
+var cx = canvas.getContext("2d");
+
+canvas.width = screen.width > 1667? 1266 : screen.width - 401;
+canvas.height = screen.height > 768? 650 : screen.height - 118;
+
+var bigENOUGH = true;
+
+if (screen.width < 1041)
+{
+	alert("This App works only on screens with a width larger than 1041px.");
+
+	bigENOUGH = false;
+
+	var menu = document.querySelector("#menu");
+
+	menu.style.display = "none";
+}
+else if (screen.width < 1366)
+{
+	alert("This App works best on screens with a larger size.");
+}
+
+myCanvasX = canvas.width;
+myCanvasY = canvas.height;
+
+function setColor(color)
+{
+	switch(color)
+	{
+		case "Cool":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "cyan";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "grey";
+			tankWheelColor = "cyan";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "cyan";
+			break;
+		case "Cooler":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "turquoise";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "#777777";
+			tankWheelColor = "#555555";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "turquoise";
+			break;
+		case "Wet":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "blue";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "grey";
+			tankWheelColor = "blue";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "blue";
+			break;
+		case "Wetter":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "darkblue";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "grey";
+			tankWheelColor = "darkblue";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "darkblue";
+			break;
+		case "Hot":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "pink";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "grey";
+			tankWheelColor = "pink";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "pink";
+			break;
+		case "Hotter":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "fuchsia";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "grey";
+			tankWheelColor = "fuchsia";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "fuchsia";
+			break;
+		case "Bright":
+			helicopterRotorColor = "lightblue";
+			helicopterRotorHolderColor = "lightblue";
+			helicopterBodyColor = "lightblue";
+			helicopterWindowColor = "lavender";
+			helicopterBackRotorColor = "lightblue";
+			helicopterbackRotorHolderColor = "lightblue";
+			helicopterOrdnanceHolderColor = "lightblue";
+			helicopterOrdnanceColor = "lightblue";
+
+			tankFirearmsColor = "lightblue";
+			tankWeaponMounterColor = "lightblue";
+			tankBodyColor = "lightblue";
+			tankWheelColor = "lavender";
+			tankChainColor = "lightblue";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "lightblue";
+			menuItemDescriptionColor = "lightblue";
+			menuItemOptionColor = "lightblue";
+			menuItemOptionBorderColor = "lavender";
+			break;
+		case "Dark":
+			helicopterRotorColor = "grey";
+			helicopterRotorHolderColor = "grey";
+			helicopterBodyColor = "grey";
+			helicopterWindowColor = "black";
+			helicopterBackRotorColor = "grey";
+			helicopterbackRotorHolderColor = "grey";
+			helicopterOrdnanceHolderColor = "grey";
+			helicopterOrdnanceColor = "grey";
+
+			tankFirearmsColor = "grey";
+			tankWeaponMounterColor = "grey";
+			tankBodyColor = "grey";
+			tankWheelColor = "black";
+			tankChainColor = "grey";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "black";
+			break;
+		case "Tasty":
+			helicopterRotorColor = "purple";
+			helicopterRotorHolderColor = "purple";
+			helicopterBodyColor = "purple";
+			helicopterWindowColor = "fuchsia";
+			helicopterBackRotorColor = "purple";
+			helicopterbackRotorHolderColor = "purple";
+			helicopterOrdnanceHolderColor = "purple";
+			helicopterOrdnanceColor = "purple";
+
+			tankFirearmsColor = "purple";
+			tankWeaponMounterColor = "purple";
+			tankBodyColor = "purple";
+			tankWheelColor = "fuchsia";
+			tankChainColor = "purple";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "purple";
+			menuItemDescriptionColor = "purple";
+			menuItemOptionColor = "purple";
+			menuItemOptionBorderColor = "fuchsia";
+			break;
+		case "Gold":
+			helicopterRotorColor = "red";
+			helicopterRotorHolderColor = "red";
+			helicopterBodyColor = "red";
+			helicopterWindowColor = "gold";
+			helicopterBackRotorColor = "red";
+			helicopterbackRotorHolderColor = "red";
+			helicopterOrdnanceHolderColor = "red";
+			helicopterOrdnanceColor = "red";
+
+			tankFirearmsColor = "red";
+			tankWeaponMounterColor = "red";
+			tankBodyColor = "red";
+			tankWheelColor = "gold";
+			tankChainColor = "red";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "red";
+			menuItemDescriptionColor = "red";
+			menuItemOptionColor = "red";
+			menuItemOptionBorderColor = "gold";
+			break;
+		case "Orange":
+			helicopterRotorColor = "darkblue";
+			helicopterRotorHolderColor = "darkblue";
+			helicopterBodyColor = "darkblue";
+			helicopterWindowColor = "Orange";
+			helicopterBackRotorColor = "darkblue";
+			helicopterbackRotorHolderColor = "darkblue";
+			helicopterOrdnanceHolderColor = "darkblue";
+			helicopterOrdnanceColor = "darkblue";
+
+			tankFirearmsColor = "darkblue";
+			tankWeaponMounterColor = "darkblue";
+			tankBodyColor = "darkblue";
+			tankWheelColor = "Orange";
+			tankChainColor = "darkblue";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "darkblue";
+			menuItemDescriptionColor = "darkblue";
+			menuItemOptionColor = "darkblue";
+			menuItemOptionBorderColor = "Orange";
+			break;
+		case "Liquid":
+			helicopterRotorColor = "#035075";
+			helicopterRotorHolderColor = "#035075";
+			helicopterBodyColor = "#035075";
+			helicopterWindowColor = "#107095";
+			helicopterBackRotorColor = "#035075";
+			helicopterbackRotorHolderColor = "#035075";
+			helicopterOrdnanceHolderColor = "#035075";
+			helicopterOrdnanceColor = "#035075";
+
+			tankFirearmsColor = "#035075";
+			tankWeaponMounterColor = "#035075";
+			tankBodyColor = "#035075";
+			tankWheelColor = "#107095";
+			tankChainColor = "#035075";
+
+			menuBackgroundColor = "white";
+			menuHeaderColor = "#035075";
+			menuItemDescriptionColor = "#035075";
+			menuItemOptionColor = "#035075";
+			menuItemOptionBorderColor = "#107095";
+			break;
+	}
+}
+
+function changeMenuColors()
+{
+	// Menu background color
+	var menu = document.querySelector("#menu");
+
+	menu.style.backgroundColor = "white";
+
+	// Menu header color
+	var menuHeader = document.querySelector(".header");
+
+	menuHeader.style.color = menuHeaderColor;
+
+	// Menu item description color
+	for (var i = 1; i < 3; i++)
+	{
+		var menuItemDescription = document.querySelector("#itemDescription" + i);
+
+		menuItemDescription.style.color = menuItemDescriptionColor;
+	}
+/*
+	// Menu item option color
+	var width = document.querySelector("#width");
+
+	width.style.color = menuItemOptionColor;
+
+	width.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	var floorNumbers = document.querySelector("#floorNumbers");
+
+	floorNumbers.style.color = menuItemOptionColor;
+
+	floorNumbers.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	var windowHeight = document.querySelector("#windowHeight");
+
+	windowHeight.style.color = menuItemOptionColor;
+
+	windowHeight.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	var groundFloor = document.querySelector("#groundFloor");
+
+	groundFloor.style.color = menuItemOptionColor;
+
+	groundFloor.style.border = "2px solid " + menuItemOptionBorderColor;
+*/
+	var color = document.querySelector("#color");
+
+	color.style.color = menuItemOptionColor;
+
+	color.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	var speed = document.querySelector("#speed");
+
+	speed.style.color = menuItemOptionColor;
+
+	speed.style.border = "2px solid " + menuItemOptionBorderColor;
+/*
+	var type = document.querySelector("#type");
+
+	type.style.color = menuItemOptionColor;
+
+	type.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	var show = document.querySelector("#show");
+
+	show.style.color = menuItemOptionColor;
+
+	show.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	var security = document.querySelector("#security");
+
+	security.style.color = menuItemOptionColor;
+
+	security.style.border = "2px solid " + menuItemOptionBorderColor;
+*/
+}
+
+var tank = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+movement: 0,
+direction: "up",
+draw: function(inX, inY, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Body
+	// Y: Firearms - 17 * size
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = 113 * size;
+	this.endY = 94 * size + (2 * size);
+
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	if (this.direction == "up")
+	{
+		this.movement = this.movement > 5 * size? 0 : this.movement + 1 * size;
+		this.direction = this.movement > 5 * size? "down" : "up";
+	}
+	else
+	{
+		this.movement = this.movement < 0? 0 : this.movement - 1 * size;
+		this.direction = this.movement < 0? "up" : "down";
+	}
+
+	// Firearms
+	cx.beginPath();
+	cx.moveTo(this.x + 58 * size, this.y + 17 * size);
+	cx.lineTo(this.x + 58 * size, this.y + 7 * size);
+	cx.moveTo(this.x + 28 * size, this.y + 7 * size - this.movement);
+	cx.lineTo(this.x + 68 * size, this.y + 7 * size + this.movement / 2);
+
+	cx.strokeStyle = tankFirearmsColor;
+	cx.stroke();
+
+	// Weapon mounter
+	cx.beginPath();
+	cx.moveTo(this.x + 38 * size, this.y + 27 * size);
+	cx.lineTo(this.x + 48 * size, this.y + 17 * size);
+	cx.lineTo(this.x + 68 * size, this.y + 17 * size);
+	cx.lineTo(this.x + 78 * size, this.y + 27 * size);
+
+	cx.strokeStyle = tankWeaponMounterColor;
+	cx.stroke();
+
+	// Body
+	cx.beginPath();
+	cx.moveTo(this.x, this.y + 47 * size);
+	cx.lineTo(this.x + 33 * size, this.y + 27 * size);
+	cx.lineTo(this.x + 88 * size, this.y + 27 * size);
+	cx.lineTo(this.x + 113 * size, this.y + 47 * size);
+	cx.lineTo(this.x + 98 * size, this.y + 67 * size);
+	cx.lineTo(this.x + 18 * size, this.y + 67 * size);
+	cx.lineTo(this.x, this.y + 47 * size);
+
+	cx.fillStyle = tankBodyColor;
+	cx.fill();
+
+	// 1st wheel
+	cx.beginPath();
+	cx.arc(this.x + 18 * size, this.y + 82 * size, 10 * size, 0, 7);
+
+	cx.fillStyle = tankWheelColor;
+	cx.fill();
+
+	// 2nd wheel
+	cx.beginPath();
+	cx.arc(this.x + 43 * size, this.y + 82 * size, 10 * size, 0, 7);
+	cx.fill();
+
+	// 3rd wheel
+	cx.beginPath();
+	cx.arc(this.x + 68 * size, this.y + 82 * size, 10 * size, 0, 7);
+	cx.fill();
+
+	// 4th wheel
+	cx.beginPath();
+	cx.arc(this.x + 93 * size, this.y + 82 * size, 10 * size, 0, 7);
+	cx.fill();
+
+	// Front chain
+	cx.beginPath();
+	cx.arc(this.x + 13 * size, this.y + 82 * size, 12 * size, 1.8, 4.5);
+
+	cx.strokeStyle = tankChainColor;
+	cx.stroke();
+
+	cx.lineTo(this.x + 101 * size, this.y + 70 * size);
+	cx.stroke();
+
+	// End chain
+	cx.beginPath();
+	cx.arc(this.x + 98 * size, this.y + 82 * size, 12 * size, 5, 7.6);
+	cx.stroke();
+
+	cx.lineTo(this.x + 10 * size, this.y + 94 * size);
+	cx.stroke();
+}
+}
+
+var helicopter = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+shakeSize: 2,
+rotator: 1,
+backRotorCounter: 1,
+endX: 0,
+endY: 0,
+draw: function(inX, inY, size) 
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = 152 * size;
+	this.endY = 104 * size + (2 * size);
+
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Shaking effect
+	this.y == inY ? this.y = this.y + this.shakeSize : this.y = this.y - this.shakeSize;
+
+	// Rotor
+	cx.beginPath();
+	cx.moveTo(this.x, this.y + size);
+	cx.lineTo(this.x + (size * 120), this.y + size);
+
+	// Rotation effect
+	this.rotator = this.rotator == 1? 0 : 1;
+
+	cx.strokeStyle = helicopterRotorColor;
+	this.rotator == 1? cx.stroke() : 0;
+
+
+	// Rotor holder
+	cx.beginPath();
+	cx.moveTo(this.x + (60 * size), this.y + size);
+	cx.lineTo(this.x + (60 * size), this.y + size + (10 * size));
+	cx.strokeStyle = helicopterRotorHolderColor;
+	cx.stroke();
+
+	// Body
+	cx.beginPath();
+	cx.arc(this.x + (60 * size), this.y + (36 * size), 25 * size, 0, 7);
+	cx.fillStyle = helicopterBodyColor;
+	cx.fill();
+
+	// Window
+	cx.beginPath();
+	cx.arc(this.x + (60 * size), this.y + (36 * size), 22 * size, 3, 5);
+	cx.fillStyle = helicopterWindowColor;
+	cx.fill();
+
+	// Back rotor
+	cx.beginPath();
+	cx.moveTo(this.x + (60 * size) + 80 * size, this.y + (36 * size) + 1 * size);
+	cx.arc(this.x + (60 * size) + 80 * size, this.y + (36 * size) + 1 * size, 10 * size, 0 + this.backRotorCounter, 0.2 + this.backRotorCounter);
+	cx.arc(this.x + (60 * size) + 80 * size, this.y + (36 * size) + 1 * size, 10 * size, 3 + this.backRotorCounter, 3.2 + this.backRotorCounter);
+	cx.fillStyle = helicopterBackRotorColor;
+	cx.fill();
+
+	this.backRotorCounter = this.backRotorCounter > 7? 0 : ++this.backRotorCounter;
+
+	// Back rotor holder
+	cx.beginPath();
+	cx.moveTo((this.x + (60 * size) + 25 * size), this.y + (36 * size));
+	cx.lineTo(this.x + (60 * size) + 80 * size, this.y + (36 * size));
+	cx.lineTo(this.x + (60 * size) + 80 * size, this.y + (36 * size) + 3 * size);
+	cx.lineTo((this.x + (60 * size) + 24 * size), this.y + (36 * size) + 5 * size);
+	cx.strokeStyle = helicopterBackRotorColor;
+	cx.fill();
+
+	// Ordnance holder
+	cx.beginPath();
+	cx.moveTo(this.x + (60 * size), this.y + (36 * size) + 25 * size);
+	cx.lineTo(this.x + (60 * size), this.y + (36 * size) + 50 * size);
+	cx.strokeStyle = helicopterOrdnanceHolderColor;
+	cx.stroke();
+
+	// Ordnance
+	cx.beginPath();
+	cx.moveTo(this.x + (60 * size) + 20 * size, this.y + (36 * size) + 25 * size);
+	cx.lineTo(this.x + (60 * size) - 30 * size, this.y + (36 * size) + 65 * size);
+	cx.strokeStyle = helicopterOrdnanceColor;
+	cx.stroke();
+}
+}
+
+var pointCounter = 0;
+var collisionCounter = 0;
+var opponentSpeed = 10;
+
+var point = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+polarity: 0,
+previousPolarity: 0,
+quantity: 0,
+speed: 0,
+collision: false,
+draw: function(inX, inY, size, inPolarity, helicopterCoordinates) 
+{
+	var textLength = 35 * size;
+	var textHeight = 15 * size;
+
+	if (this.x == 0 || this.inPreviousX == 0)
+	{
+		if (inPolarity == 0)
+		{
+			inPolarity = Math.random() > 0.7? 1 : -1;
+		}
+
+		this.collision == true? pointCounter += this.polarity * this.quantity : 0;
+
+		this.previousPolarity = this.polarity;
+
+		this.polarity = inPolarity;
+
+		this.collision == true? collisionCounter++ : 0;
+
+		this.collision = false;
+
+		var maxPointSpeed = 10;
+
+		var pointSpeed = Math.ceil(Math.random() * maxPointSpeed);
+
+		this.speed = pointSpeed + opponentSpeed;
+
+		this.quantity =  this.polarity == 1? maxPointSpeed + opponentSpeed + pointSpeed : maxPointSpeed * 2 + opponentSpeed - pointSpeed;
+	}
+
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	if (	this.x + textLength > helicopterCoordinates.x
+		&& this.x < helicopterCoordinates.x + helicopterCoordinates.xSize
+		&& this.y > helicopterCoordinates.y
+		&& this.y - textHeight < helicopterCoordinates.y + helicopterCoordinates.ySize)
+	{
+		this.size = 3;
+		this.collision = true;
+	}
+	else
+	{
+		this.size = 1;
+	}
+
+	var text;
+	if (this.polarity == 1)
+	{
+		text = this.quantity + "+";
+		cx.fillStyle = "#006699";
+	}
+	else if (this.polarity == -1)
+	{
+		text = this.quantity + "-";
+		cx.fillStyle = "red";
+	}
+
+	cx.font = 20 * this.size + "px Verdana";
+	cx.fillText(text, this.x, this.y);
+
+	if (!RELEASEMODE)
+	{
+		cx.strokeRect(this.x, this.y - textHeight, textLength, textHeight);
+	}
+
+	this.x = this.x > myCanvasX? 0 : this.x + this.speed;
+}
+}
+
+var points = {Points: function()
+{
+	this.myPoint = Object.create(point);
+	this.myPoint2 = Object.create(point);
+	this.myPoint3 = Object.create(point);
+	this.myPoint4 = Object.create(point);
+	this.myPoint5 = Object.create(point);
+	this.myPoint6 = Object.create(point);
+	this.myPoint7 = Object.create(point);
+},
+draw: function(helicopterCoordinates)
+{
+	this.myPoint.draw(50, 50, 1, 0, helicopterCoordinates);
+
+	this.myPoint2.draw(50, 150, 1, 0, helicopterCoordinates);
+
+	this.myPoint3.draw(50, 250, 1, 0, helicopterCoordinates);
+	
+	if (myCanvasY > 449)
+	{
+		this.myPoint4.draw(50, 350, 1, 0, helicopterCoordinates);
+	}
+	
+	if (myCanvasY > 549)
+	{
+		this.myPoint5.draw(50, 450, 1, 0, helicopterCoordinates);
+	}
+
+	if (myCanvasY > 649)
+	{
+		this.myPoint7.draw(50, 550, 1, 0, helicopterCoordinates);
+	}
+}
+}
+
+var levelTransition;
+var calledOnce = false;
+var continueGame = true;
+var intervalElapsed = true;
+
+var infoPage = {InfoPage: function()
+{
+	this.myHelicopter = Object.create(helicopter);
+
+	this.myTank = Object.create(tank);
+
+	this.myTank2 = Object.create(tank);
+},
+draw: function(message)
+{
+	cx.font = "40px verdana";
+	cx.fillStyle = menuHeaderColor;
+	cx.fillText(message, 100, 100);
+
+	this.myHelicopter.draw(100, 200, 2);
+
+	if (myCanvasY > 649)
+	{
+		this.myTank.draw(400, 350, 2);
+
+		this.myTank2.draw(700, 350, 2);
+	}
+}
+}
+
+var airPatrol;
+var groundPatrol;
+var initialised = false;
+var gameStarted = false;
+
+function drawGame(color, inSpeed)
+{
+	// Might already be set
+	clearInterval(airPatrol);
+
+	// Convert string to int
+	inSpeed++;
+	inSpeed--;
+
+	opponentSpeed = inSpeed;
+
+	var x = myCanvasX - 245;
+	var helicopterY = 250;
+
+	var myHelicopter = Object.create(helicopter);
+	var myPoints = new points.Points();
+
+	myPoints.draw = points.draw;
+
+	var myInfoPage = new infoPage.InfoPage();
+
+	myInfoPage.draw = infoPage.draw;
+
+	addEventListener("keypress", function(event)
+	{
+		if (initialised)
+		{
+			if (event.keyCode == 38)
+			{
+				helicopterY > 20 ? helicopterY -= 20 : 0;
+			}
+			else if (event.keyCode == 40)
+			{
+				helicopterY < myCanvasY - 150 ? helicopterY += 20 : 0;
+			}
+		}
+	});
+	
+	// Patroling
+	airPatrol = setInterval(function()
+	{
+		// Clear clouds
+		cx.fillStyle = "white";
+		cx.fillRect(0, 0, myCanvasX, myCanvasY);
+
+		if (!RELEASEMODE)
+		{
+			cx.strokeStyle = "red";
+			cx.strokeRect(x, helicopterY, 152, 102);
+		}
+
+		if (!gameStarted)
+		{
+			myInfoPage.draw("FlightTrainer");
+		}
+		else if (pointCounter > 200 || !continueGame)
+		{
+			if (pointCounter > 200)
+			{
+				continueGame = false;
+
+				pointCounter -= pointCounter;
+
+				opponentSpeed += 5;
+
+				intervalElapsed = false;
+
+				clearTimeout(levelTransition);
+
+				levelTransition = setTimeout(function() {intervalElapsed = true}, 1000);
+			}
+
+			myInfoPage.draw("Kudos, next level!");
+		}
+		else
+		{
+			var helicopterCoordinates = {x: x, y: helicopterY, xSize: 152, ySize: 102};
+
+			if (initialised)
+			{
+				setColor(color);
+				changeMenuColors();
+			}
+			else
+			{
+				helicopterY > 65? helicopterY -= 10 : initialised = true;
+
+				setColor("Dark");
+				changeMenuColors();
+			}
+
+			myHelicopter.draw(x, helicopterY, 1);
+
+			myPoints.draw(helicopterCoordinates);
+		}
+
+		cx.fillStyle = menuItemDescriptionColor;
+		cx.font = "20px Verdana";
+
+		cx.fillText("Speed: " + opponentSpeed, 50, myCanvasY - 50);
+
+		cx.fillStyle = pointCounter < 0? "red" : menuItemDescriptionColor;
+
+		cx.fillText("Points: " + pointCounter, 200, myCanvasY - 50);
+	}, 50);
+}
+
+
+var form = document.querySelector("form");
+
+function draw()
+{
+	if (bigENOUGH)
+	{
+		var color = form.elements.color.value;
+		var speed = form.elements.speed.value;
+
+		document.querySelector("#color").blur();
+		document.querySelector("#speed").blur();
+
+		document.querySelector("#canvas").focus();
+
+		var x = myCanvasX - 475;
+
+		setColor(color);
+		changeMenuColors();
+
+		drawGame(color, speed)
+	}
+}
+
+draw();
+
+form.addEventListener("change", draw);
+
+addEventListener("keypress", function() { continueGame = intervalElapsed? true : false; gameStarted = true });
+
+</script>
+
+</body>
+</html>
+
